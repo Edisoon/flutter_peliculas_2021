@@ -1,2 +1,15 @@
 ### todas las peliculas
 https://api.themoviedb.org/3/movie/now_playing?api_key=55c194afc8bb27fedd779bb9013712ed&language=es-ES&page=1
+
+###latest movies
+https://api.themoviedb.org/3/movie/latest?api_key=55c194afc8bb27fedd779bb9013712ed&language=es-ES
+
+###Popular movies
+https://api.themoviedb.org/3/movie/popular?api_key=55c194afc8bb27fedd779bb9013712ed&language=es-ES&page=1
+
+###top rated
+GET https://api.themoviedb.org/3/movie/top_rated?api_key=55c194afc8bb27fedd779bb9013712ed&language=es-ES&page=1
+
+### upcoming
+
+https://api.themoviedb.org/3/movie/upcoming?api_key=55c194afc8bb27fedd779bb9013712ed&language=es-ES&page=1
