@@ -2,6 +2,8 @@
 import 'dart:convert';
 
 class Movie {
+  final String imageUri = 'https://image.tmdb.org/t/p/w500';
+  final String placeHolderUri = 'https://i.stack.imgur.com/GNhxO.png';
     Movie({
         required this.adult,
         this.backdropPath,
@@ -36,13 +38,13 @@ class Movie {
     
     get fullPosterImg{
       if(this.posterPath != null)
-        return'https://image.tmdb.org/t/p/w500${this.posterPath}';
-      return 'https://i.stack.imgur.com/GNhxO.png';
+        return'$imageUri${this.posterPath}';
+      return '$placeHolderUri';
     }
     get fullBackDropPath{
       if(this.backdropPath != null)
-        return 'https://image.tmdb.org/t/p/w500${this.backdropPath}';
-      return 'https://i.stack.imgur.com/GNhxO.png';
+        return '$imageUri${this.backdropPath}';
+      return '$placeHolderUri';
     }
 
     factory Movie.fromJson(String str) => Movie.fromMap(json.decode(str));

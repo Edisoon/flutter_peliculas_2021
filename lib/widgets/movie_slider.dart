@@ -1,16 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:peliculas_2021/models/models.dart';
+import 'package:peliculas_2021/widgets/widgets.dart';
 
-class MovieSlider extends StatelessWidget {
+class MovieSlider extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
+  final Function onNextPage;
    const MovieSlider({
      Key? key,
-      required this.title, 
-      required this.movies}) :assert(title!=''), super(key: key);
+      required this.movies, 
+      required this.onNextPage,
+      this.title
+    }) :assert(title!=''), super(key: key);
+       
+
+  @override
+  _MovieSliderState createState() => _MovieSliderState();
+}
+
+class _MovieSliderState extends State<MovieSlider> {
+
+  final ScrollController scrollController = new ScrollController();
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if(scrollController.position.pixels>= scrollController.position.maxScrollExtent- 600)
+      {
+        widget.onNextPage();
+      }
+
+    });
+  }
+
+  @override
+  void dispose() { 
+    
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    if(this.widget.movies.length==0){
+      return LoadingCircular();
+    }
     return Container(
       width: double.infinity,
       height: 260,
@@ -18,22 +53,23 @@ class MovieSlider extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          if(this.title != null)
+          if(this.widget.title != null)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Text(this.title!,
+              child: Text(this.widget.title!,
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(0xff394867)),
               ),
             ),
-          SizedBox(height: 12),
+          SizedBox(height: 8),
           Expanded(
             child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: movies.length,
-                itemBuilder: (_, int index) => _MoviePoster(movies[index])),
+              controller: scrollController,
+              scrollDirection: Axis.horizontal,
+              itemCount: widget.movies.length,
+              itemBuilder: (_, int index) => _MoviePoster(widget.movies[index])),
           ),
         ],
       ),
@@ -55,7 +91,7 @@ class _MoviePoster extends StatelessWidget {
         children: [
 
           GestureDetector(
-            onTap: ()=> Navigator.pushNamed(context, 'details', arguments: 'movie-instace'),
+            onTap: ()=> Navigator.pushNamed(context, 'details', arguments: movie),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
