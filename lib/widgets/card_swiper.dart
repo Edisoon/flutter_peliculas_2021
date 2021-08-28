@@ -37,8 +37,8 @@ class CardSwiper extends StatelessWidget {
               ),
             ),
           Swiper(
-            autoplay: true,
-            autoplayDelay: 5000,
+            // autoplay: true,
+            // autoplayDelay: 5000,
             autoplayDisableOnInteraction: true,
             itemCount: movies.length,
             layout: SwiperLayout.TINDER,

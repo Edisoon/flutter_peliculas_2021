@@ -12,6 +12,8 @@ class MoviesProvider extends ChangeNotifier {
   List<Movie> topRateMovies = [];
   List<Movie> uncomingMovies = [];
 
+  Map<int, List<Cast>> moviesCast = {};
+
   int _popularPage  = 0;
   int __topRatePage = 0;
   int _uncomingPage = 0;
@@ -59,7 +61,7 @@ class MoviesProvider extends ChangeNotifier {
 
   getTopRates() async{
     __topRatePage++;
-    final jsonData =await _getJsonData('3/movie/top_rated', _popularPage);
+    final jsonData =await _getJsonData('3/movie/top_rated', __topRatePage);
 
     final topRateResponse = PopularResponse.fromJson(jsonData);
 
@@ -70,13 +72,26 @@ class MoviesProvider extends ChangeNotifier {
 
   getUncoming() async{
     _uncomingPage++;
-    final jsonData =await _getJsonData('3/movie/upcoming', _popularPage);
+    final jsonData =await _getJsonData('3/movie/upcoming', _uncomingPage);
 
     final uncomingResponse = NowPlayingResponse.fromJson(jsonData);
 
     uncomingMovies = [...uncomingMovies, ...uncomingResponse.results];
 
     notifyListeners();
+  }
+
+  Future<List<Cast>> getMovieCast( int movieId ) async{
+    if(moviesCast.containsKey(movieId)) return moviesCast[movieId]!;
+    print('pidiendo info al server');
+
+    final jsonData =await _getJsonData('3/movie/$movieId/credits');
+    final creditsResponse = CreditsResponse.fromJson(jsonData);
+
+    moviesCast[movieId] = creditsResponse.cast;
+
+    return creditsResponse.cast;
+
   }
 
 
